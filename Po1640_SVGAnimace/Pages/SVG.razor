@@ -1,0 +1,49 @@
+﻿@page "/svg"
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
+<PageTitle>Animace SVG</PageTitle>
+<div>
+    <button class="btn btn-primary" @onclick="PridatObrazec">Přidat obrazec</button>
+    <button class="btn btn-warning" @onclick="OdebratObrazec">Odebrat poslední obrazec</button>
+    <button class="btn btn-primary" @onclick="AnimaceSpustit">Spustit animaci</button>
+    <button class="btn btn-primary" @onclick="AnimaceStop">Zastavit animaci</button>
+</div>
+<div>
+    <button class="btn btn-primary" @onclick="NastaveniUlozit">Uložit nastavení</button>
+    <button class="btn btn-primary" @onclick="NastaveniNacist">Načíst nastavení </button>
+    <button class="btn btn-warning" @onclick="NastaveniSmazat">Smazat localStorage nastavení </button>
+
+</div>
+
+<svg class="my-3" width="@SvgWidth" height="@SvgHeight" xmlns="http://www.w3.org/2000/svg" style="border:black solid">
+    <defs>
+        <filter id="f2" width="120" height="120">
+            <feOffset in="SourceGraphic" dx="20" dy="20" />
+            <feGaussianBlur stdDeviation="10" />
+            <feBlend in="SourceGraphic" in2="blurOut" />
+        </filter>
+    </defs>
+
+    @foreach (var item in SvgObrazceList)
+    {
+        switch (item)
+        {
+            case Models.Obdelnik obdelnik:
+                <rect width="@obdelnik.StranaA" height="@obdelnik.StranaB" x="@obdelnik.PozX" y="@obdelnik.PozY"
+                      style="fill:rgb(@obdelnik.Barva.R,@obdelnik.Barva.B,@obdelnik.Barva.G);stroke-width:3;stroke:black" filter="url(#f2)" />
+                break;
+            case Models.Ctverec ctverec:
+                <rect width="@ctverec.StranaA" height="@ctverec.StranaA" x="@ctverec.PozX" y="@ctverec.PozY"
+                      style="fill:rgb(@ctverec.Barva.R,@ctverec.Barva.B,@ctverec.Barva.G);stroke-width:3;stroke:black" filter="url(#f2)" />
+                break;
+            case Models.Kruh kruh:
+                <circle r="@kruh.Polomer" cx="@kruh.PozX" cy="@kruh.PozY"
+                        fill="rgb(@kruh.Barva.R,@kruh.Barva.B,@kruh.Barva.G)" stroke="black" stroke-width="3" filter="url(#f2)" />
+                break;
+        }
+    }
+    
+</svg>
+
+@code {
+
+}
